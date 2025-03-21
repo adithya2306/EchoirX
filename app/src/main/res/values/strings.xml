@@ -84,6 +84,8 @@
     <string name="title_server">Server</string>
     <string name="title_server_settings">Server Settings</string>
     <string name="title_server_recommendation">Server Configuration Required</string>
+    <string name="title_clear_data">Clear data</string>
+    <string name="title_reset_settings">Reset settings</string>
 
     <!-- Messages -->
     <string name="msg_downloads_empty">No downloads yet</string>

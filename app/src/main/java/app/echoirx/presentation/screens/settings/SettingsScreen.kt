@@ -204,7 +204,7 @@ fun SettingsScreen(
 
         item {
             PreferenceItem(
-                title = stringResource(R.string.title_data),
+                title = stringResource(R.string.title_clear_data),
                 subtitle = stringResource(R.string.msg_clear_data_subtitle),
                 icon = Icons.Outlined.Delete,
                 onClick = { showClearDataSheet = true },
@@ -214,7 +214,7 @@ fun SettingsScreen(
 
         item {
             PreferenceItem(
-                title = stringResource(R.string.dialog_reset_settings_title),
+                title = stringResource(R.string.title_reset_settings),
                 subtitle = stringResource(R.string.msg_reset_settings_subtitle),
                 icon = Icons.Outlined.RestartAlt,
                 onClick = { showResetSheet = true },
