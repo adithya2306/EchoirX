@@ -111,12 +111,6 @@ fun FileNamingBottomSheet(
                         label = "elevation"
                     )
 
-                    val previewText = when (format) {
-                        FileNamingFormat.ARTIST_TITLE -> "Artist - Title.mp3"
-                        FileNamingFormat.TITLE_ARTIST -> "Title - Artist.mp3"
-                        FileNamingFormat.TITLE_ONLY -> "Title.mp3"
-                    }
-
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -155,7 +149,7 @@ fun FileNamingBottomSheet(
                                 )
 
                                 Text(
-                                    text = previewText,
+                                    text = format.previewText,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = if (isSelected)
                                         MaterialTheme.colorScheme.secondary
