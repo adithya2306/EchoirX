@@ -9,8 +9,7 @@ import app.echoirx.domain.model.Download
 
 @Database(
     entities = [Download::class],
-    version = 1,
-    exportSchema = false
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

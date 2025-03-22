@@ -121,6 +121,10 @@ android {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
     applicationVariants.all {
         outputs.all {
             if (this is ApkVariantOutputImpl) {
