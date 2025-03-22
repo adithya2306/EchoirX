@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import app.echoirx.data.local.AppDatabase
 import app.echoirx.data.local.dao.DownloadDao
+import app.echoirx.data.local.dao.SearchHistoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +28,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDownloadDao(database: AppDatabase): DownloadDao = database.downloadDao()
+
+    @Provides
+    @Singleton
+    fun provideSearchHistoryDao(database: AppDatabase): SearchHistoryDao =
+        database.searchHistoryDao()
 }
