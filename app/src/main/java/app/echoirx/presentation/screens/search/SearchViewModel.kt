@@ -29,10 +29,6 @@ class SearchViewModel @Inject constructor(
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
 
-    private fun stringResource(resId: Int): String {
-        return context.getString(resId)
-    }
-
     fun onQueryChange(query: String) {
         _state.update {
             it.copy(
@@ -116,7 +112,7 @@ class SearchViewModel @Inject constructor(
                 if (serverUrl.contains("example.com")) {
                     _state.update {
                         it.copy(
-                            error = stringResource(R.string.error_example_server),
+                            error = context.getString(R.string.error_example_server),
                             status = SearchStatus.Error,
                             showServerRecommendation = true
                         )
@@ -149,7 +145,7 @@ class SearchViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         error = if (isExampleServer)
-                            stringResource(R.string.error_example_server)
+                            context.getString(R.string.error_example_server)
                         else
                             e.message,
                         status = SearchStatus.Error,
