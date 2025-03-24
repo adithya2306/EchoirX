@@ -2,6 +2,7 @@ package app.echoirx.domain.usecase
 
 import app.echoirx.domain.model.FileNamingFormat
 import app.echoirx.domain.repository.SettingsRepository
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SettingsUseCase @Inject constructor(
@@ -27,4 +28,12 @@ class SettingsUseCase @Inject constructor(
     suspend fun resetServerSettings() {
         repository.setServerUrl("https://example.com/api/echoir")
     }
+
+    suspend fun getShowUnsupportedFormats() =
+        repository.getShowUnsupportedFormats().first()
+
+    fun getShowUnsupportedFormatsAsFlow() = repository.getShowUnsupportedFormats()
+
+    suspend fun setShowUnsupportedFormats(show: Boolean) =
+        repository.setShowUnsupportedFormats(show)
 }

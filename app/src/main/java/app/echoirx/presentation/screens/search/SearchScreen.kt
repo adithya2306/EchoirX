@@ -262,33 +262,35 @@ fun SearchScreen(
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    SearchQuality.entries.forEach { quality ->
-                        var selected by remember {
-                            mutableStateOf(state.searchFilter.qualities.contains(quality))
-                        }
-                        FilterChip(
-                            selected = selected,
-                            onClick = {
-                                selected = !selected
-                                if (selected) {
-                                    viewModel.onSearchFilterQualityAdded(quality)
-                                } else {
-                                    viewModel.onSearchFilterQualityRemoved(quality)
-                                }
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(quality.label),
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                            },
-                            border = FilterChipDefaults.filterChipBorder(
-                                enabled = true,
+                    SearchQuality.entries
+                        .filter { state.showUnsupportedFormats || it.isSupported }
+                        .forEach { quality ->
+                            var selected by remember {
+                                mutableStateOf(state.searchFilter.qualities.contains(quality))
+                            }
+                            FilterChip(
                                 selected = selected,
-                                borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                                onClick = {
+                                    selected = !selected
+                                    if (selected) {
+                                        viewModel.onSearchFilterQualityAdded(quality)
+                                    } else {
+                                        viewModel.onSearchFilterQualityRemoved(quality)
+                                    }
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(quality.label),
+                                        style = MaterialTheme.typography.labelLarge
+                                    )
+                                },
+                                border = FilterChipDefaults.filterChipBorder(
+                                    enabled = true,
+                                    selected = selected,
+                                    borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                                )
                             )
-                        )
-                    }
+                        }
                 }
 
                 Row(

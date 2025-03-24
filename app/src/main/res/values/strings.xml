@@ -88,6 +88,7 @@
     <string name="title_server_recommendation">Server Configuration Required</string>
     <string name="title_clear_data">Clear data</string>
     <string name="title_reset_settings">Reset settings</string>
+    <string name="title_show_unsupported_formats">Show unsupported formats</string>
 
     <!-- Messages -->
     <string name="msg_downloads_empty">No downloads yet</string>
@@ -110,6 +111,7 @@
     <string name="msg_file_naming_desc">Choose how your downloaded files will be named</string>
     <string name="msg_region_desc">Select your region for content availability</string>
     <string name="msg_server_recommendation">You\'re using the example server URL. Please configure a real server URL in the Settings tab to search for and download music.</string>
+    <string name="msg_show_unsupported_formats">Include audio formats that are not playable on this device</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Downloads</string>

@@ -2,6 +2,7 @@ package app.echoirx.presentation.screens.search
 
 import androidx.annotation.StringRes
 import app.echoirx.R
+import app.echoirx.domain.model.QualityConfig
 import app.echoirx.domain.model.SearchResult
 
 data class SearchState(
@@ -12,7 +13,8 @@ data class SearchState(
     val filteredResults: List<SearchResult> = emptyList(),
     val status: SearchStatus = SearchStatus.Empty,
     val error: String? = null,
-    val showServerRecommendation: Boolean = false
+    val showServerRecommendation: Boolean = false,
+    val showUnsupportedFormats: Boolean = false,
 )
 
 enum class SearchType(
@@ -37,11 +39,22 @@ enum class SearchContentFilter(
 
 enum class SearchQuality(
     @StringRes val label: Int,
-    val format: String
+    val format: String,
+    val isSupported: Boolean = true
 ) {
-    HIRES(R.string.quality_label_hires, "HIRES_LOSSLESS"),
-    LOSSLESS(R.string.quality_label_lossless, "LOSSLESS"),
-    ATMOS(R.string.label_dolby_atmos, "DOLBY_ATMOS"),
+    HIRES(
+        R.string.quality_label_hires,
+        "HIRES_LOSSLESS"
+    ),
+    LOSSLESS(
+        R.string.quality_label_lossless,
+        "LOSSLESS"
+    ),
+    ATMOS(R.string.label_dolby_atmos,
+        "DOLBY_ATMOS",
+        QualityConfig.DolbyAtmosAC3.isSupported() ||
+            QualityConfig.DolbyAtmosAC4.isSupported()
+    ),
 }
 
 sealed class SearchStatus {

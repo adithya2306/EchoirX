@@ -33,6 +33,26 @@ class SearchViewModel @Inject constructor(
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            settingsUseCase.getShowUnsupportedFormatsAsFlow()
+                .collect { showUnsupportedFormats ->
+                    _state.update {
+                        it.copy(
+                            showUnsupportedFormats = showUnsupportedFormats
+                        )
+                            .apply {
+                                // Remove previously applied filter that may be unsupported now.
+                                if (!showUnsupportedFormats) {
+                                    searchFilter.qualities.removeIf { q -> !q.isSupported }
+                                }
+                            }
+                    }
+                    onSearchFilterChanged()
+                }
+        }
+    }
+
     val searchHistory: StateFlow<List<SearchHistory>> = searchUseCase.getSearchHistory()
         .combine(state) {
             searchHistory, state ->
@@ -103,7 +123,8 @@ class SearchViewModel @Inject constructor(
                     it.copy(
                         filteredResults = searchUseCase.filterSearchResults(
                             _state.value.results,
-                            _state.value.searchFilter
+                            _state.value.searchFilter,
+                            _state.value.showUnsupportedFormats
                         )
                     )
                 }
@@ -146,7 +167,8 @@ class SearchViewModel @Inject constructor(
                         results = results,
                         filteredResults = searchUseCase.filterSearchResults(
                             results,
-                            _state.value.searchFilter
+                            _state.value.searchFilter,
+                            _state.value.showUnsupportedFormats
                         ),
                         status = if (results.isEmpty()) SearchStatus.NoResults else SearchStatus.Success,
                         showServerRecommendation = false

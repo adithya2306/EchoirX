@@ -1,6 +1,7 @@
 package app.echoirx.domain.repository
 
 import app.echoirx.domain.model.FileNamingFormat
+import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
     suspend fun getOutputDirectory(): String?
@@ -11,4 +12,6 @@ interface SettingsRepository {
     suspend fun setRegion(region: String)
     suspend fun getServerUrl(): String
     suspend fun setServerUrl(url: String)
+    fun getShowUnsupportedFormats(): Flow<Boolean>
+    suspend fun setShowUnsupportedFormats(show: Boolean)
 }

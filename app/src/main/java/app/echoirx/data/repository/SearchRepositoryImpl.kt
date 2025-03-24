@@ -31,16 +31,18 @@ class SearchRepositoryImpl @Inject constructor(
 
     override suspend fun filterSearchResults(
         results: List<SearchResult>,
-        filter: SearchFilter
+        filter: SearchFilter,
+        showUnsupportedFormats: Boolean
     ): List<SearchResult> {
         return results.filter { result ->
+            val formatSupported = showUnsupportedFormats || result.hasSupportedFormat()
             val formatMatch = filter.qualities.isEmpty() || filter.qualities.any {
                 result.formats?.contains(it.format) ?: false
             }
             val explicitMatch = filter.contentFilters.isEmpty() || filter.contentFilters.any {
                 it.explicit == result.explicit
             }
-            formatMatch && explicitMatch
+            formatSupported && formatMatch && explicitMatch
         }
     }
 

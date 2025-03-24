@@ -19,8 +19,13 @@ class SearchUseCase @Inject constructor(
 
     suspend fun filterSearchResults(
         results: List<SearchResult>,
-        filter: SearchFilter
-    ): List<SearchResult> = repository.filterSearchResults(results, filter)
+        filter: SearchFilter,
+        showUnsupportedFormats: Boolean
+    ): List<SearchResult> = repository.filterSearchResults(
+        results,
+        filter,
+        showUnsupportedFormats
+    )
 
     fun getSearchHistory(): Flow<List<SearchHistory>> =
         repository.getSearchHistory()

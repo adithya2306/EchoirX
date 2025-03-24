@@ -36,13 +36,15 @@ class SettingsViewModel @Inject constructor(
             val format = settingsUseCase.getFileNamingFormat()
             val region = settingsUseCase.getRegion()
             val serverUrl = settingsUseCase.getServerUrl()
+            val showUnsupportedFormats = settingsUseCase.getShowUnsupportedFormats()
 
             _state.update {
                 it.copy(
                     outputDirectory = dir,
                     fileNamingFormat = format,
                     region = region,
-                    serverUrl = serverUrl
+                    serverUrl = serverUrl,
+                    showUnsupportedFormats = showUnsupportedFormats
                 )
             }
         }
@@ -89,6 +91,17 @@ class SettingsViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     serverUrl = url
+                )
+            }
+        }
+    }
+
+    fun updateShowUnsupportedFormats(show: Boolean) {
+        viewModelScope.launch {
+            settingsUseCase.setShowUnsupportedFormats(show)
+            _state.update {
+                it.copy(
+                    showUnsupportedFormats = show
                 )
             }
         }
