@@ -349,6 +349,7 @@ fun SearchScreen(
     if (showFilterBottomSheet) {
         FilterBottomSheet(
             currentFilter = state.searchFilter,
+            searchQualities = state.availableQualities,
             onQualityFilterAdded = { quality ->
                 viewModel.onSearchFilterQualityAdded(quality)
             },

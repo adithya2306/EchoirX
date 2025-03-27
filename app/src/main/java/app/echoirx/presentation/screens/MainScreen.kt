@@ -83,7 +83,11 @@ fun MainScreen(navController: NavHostController) {
                     ?.get<SearchResult>("result")
 
                 if (type != null && id != null && result != null) {
-                    DetailsScreen(result, snackbarHostState = snackbarHostState)
+                    DetailsScreen(
+                        result,
+                        snackbarHostState,
+                        navController
+                    )
                 }
             }
             composable(Route.Settings.path) {

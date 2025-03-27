@@ -11,7 +11,8 @@ interface SearchRepository {
     suspend fun getAlbumTracks(albumId: Long): List<SearchResult>
     suspend fun filterSearchResults(
         results: List<SearchResult>,
-        filter: SearchFilter
+        filter: SearchFilter,
+        showUnsupportedFormats: Boolean
     ): List<SearchResult>
     fun getSearchHistory(): Flow<List<SearchHistory>>
     suspend fun deleteSearchHistoryItem(item: SearchHistory)

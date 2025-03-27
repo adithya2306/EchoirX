@@ -37,6 +37,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import app.echoirx.R
 import app.echoirx.data.utils.extensions.showSnackbar
 import app.echoirx.domain.model.SearchResult
@@ -48,8 +49,9 @@ import app.echoirx.presentation.components.TrackCover
 @Composable
 fun DetailsScreen(
     result: SearchResult,
-    viewModel: DetailsViewModel = hiltViewModel(),
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    navController: NavController,
+    viewModel: DetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -138,6 +140,10 @@ fun DetailsScreen(
                             context.getString(config.label)
                         )
                     )
+                },
+                onOptionsRemoved = {
+                    // If we have no options to show, go back to previous screen.
+                    navController.popBackStack()
                 }
             )
         }

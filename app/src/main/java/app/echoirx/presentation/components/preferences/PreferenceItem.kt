@@ -1,8 +1,6 @@
 package app.echoirx.presentation.components.preferences
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,8 +10,13 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,6 +33,7 @@ fun PreferenceItem(
     onClick: (() -> Unit)? = null,
     iconTint: Color = LocalContentColor.current,
     position: PreferencePosition = PreferencePosition.Single,
+    switchModel: PreferenceSwitchModel? = null,
 ) {
     val shape = when (position) {
         PreferencePosition.Single -> RoundedCornerShape(12.dp)
@@ -71,13 +75,12 @@ fun PreferenceItem(
         },
         supportingContent = {
             if (subtitle != null) {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
             }
         },
         leadingContent = {
@@ -96,6 +99,24 @@ fun PreferenceItem(
                     modifier = Modifier.size(24.dp)
                 )
             }
+        },
+        trailingContent = {
+            switchModel?.let { PreferenceSwitch(it) }
+        }
+    )
+}
+
+@Composable
+fun PreferenceSwitch(
+    model: PreferenceSwitchModel
+) {
+    var checked by rememberSaveable(model) { mutableStateOf(model.isChecked) }
+    Switch(
+        checked = model.isChecked,
+        enabled = model.isCheckable,
+        onCheckedChange = {
+            checked = it
+            model.onCheckedChange(it)
         }
     )
 }

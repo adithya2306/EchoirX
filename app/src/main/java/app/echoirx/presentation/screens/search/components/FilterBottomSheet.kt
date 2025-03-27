@@ -30,6 +30,7 @@ import app.echoirx.presentation.screens.search.SearchQuality
 @Composable
 fun FilterBottomSheet(
     currentFilter: SearchFilter,
+    searchQualities: List<SearchQuality> = SearchQuality.entries,
     onQualityFilterAdded: (SearchQuality) -> Unit,
     onQualityFilterRemoved: (SearchQuality) -> Unit,
     onContentFilterAdded: (SearchContentFilter) -> Unit,
@@ -72,7 +73,7 @@ fun FilterBottomSheet(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    SearchQuality.entries.forEach { quality ->
+                    searchQualities.forEach { quality ->
                         var selected by remember {
                             mutableStateOf(currentFilter.qualities.any { it == quality })
                         }

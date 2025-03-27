@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudQueue
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.FilterAltOff
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Public
@@ -37,6 +38,7 @@ import app.echoirx.domain.model.Region
 import app.echoirx.presentation.components.preferences.PreferenceCategory
 import app.echoirx.presentation.components.preferences.PreferenceItem
 import app.echoirx.presentation.components.preferences.PreferencePosition
+import app.echoirx.presentation.components.preferences.PreferenceSwitchModel
 import app.echoirx.presentation.screens.settings.components.FileNamingBottomSheet
 import app.echoirx.presentation.screens.settings.components.RegionBottomSheet
 import app.echoirx.presentation.screens.settings.components.ServerBottomSheet
@@ -164,7 +166,20 @@ fun SettingsScreen(
                 subtitle = stringResource(R.string.msg_server_subtitle),
                 icon = Icons.Outlined.CloudQueue,
                 onClick = { showServerSheet = true },
-                position = PreferencePosition.Bottom
+                position = PreferencePosition.Middle
+            )
+        }
+
+        item {
+            PreferenceItem(
+                title = stringResource(R.string.title_show_unsupported_formats),
+                subtitle = stringResource(R.string.msg_show_unsupported_formats),
+                icon = Icons.Outlined.FilterAltOff,
+                position = PreferencePosition.Bottom,
+                switchModel = PreferenceSwitchModel(
+                    isChecked = state.showUnsupportedFormats,
+                    onCheckedChange = { viewModel.updateShowUnsupportedFormats(it) }
+                )
             )
         }
 
