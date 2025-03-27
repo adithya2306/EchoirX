@@ -60,6 +60,8 @@
     <string name="cd_delete">Delete</string>
     <string name="cd_share">Share</string>
     <string name="cd_history">History</string>
+    <string name="cd_search_history_item">Previously searched</string>
+    <string name="cd_search_history_delete">Delete previously searched entry</string>
 
     <!-- Labels -->
     <string name="label_explicit">Explicit</string>

@@ -66,6 +66,7 @@ import app.echoirx.presentation.components.TrackBottomSheet
 import app.echoirx.presentation.navigation.NavConstants
 import app.echoirx.presentation.navigation.Route
 import app.echoirx.presentation.screens.search.components.FilterBottomSheet
+import app.echoirx.presentation.screens.search.components.SearchHistoryItem
 import app.echoirx.presentation.screens.search.components.SearchResultItem
 import kotlinx.coroutines.flow.filter
 
@@ -82,6 +83,7 @@ fun SearchScreen(
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
+    val searchHistory by viewModel.searchHistory.collectAsState()
 
     var selectedTrack by remember { mutableStateOf<SearchResult?>(null) }
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -225,11 +227,26 @@ fun SearchScreen(
 
         when (state.status) {
             SearchStatus.Empty, SearchStatus.Ready -> {
-                EmptyStateMessage(
-                    title = stringResource(R.string.msg_search_empty),
-                    description = stringResource(R.string.msg_search_empty_desc),
-                    painter = painterResource(R.drawable.ic_search)
-                )
+                if (searchHistory.isEmpty()) {
+                    EmptyStateMessage(
+                        title = stringResource(R.string.msg_search_empty),
+                        description = stringResource(R.string.msg_search_empty_desc),
+                        painter = painterResource(R.drawable.ic_search)
+                    )
+                } else {
+                    LazyColumn {
+                        items(searchHistory) { item ->
+                            SearchHistoryItem(
+                                item = item,
+                                onClick = {
+                                    viewModel.onQueryChange(item.query)
+                                    viewModel.search()
+                                },
+                                onDelete = { viewModel.deleteSearchHistoryItem(it) }
+                            )
+                        }
+                    }
+                }
             }
 
             SearchStatus.Loading -> {

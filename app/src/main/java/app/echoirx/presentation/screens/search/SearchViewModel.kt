@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.echoirx.R
 import app.echoirx.domain.model.DownloadRequest
 import app.echoirx.domain.model.QualityConfig
+import app.echoirx.domain.model.SearchHistory
 import app.echoirx.domain.model.SearchResult
 import app.echoirx.domain.usecase.ProcessDownloadUseCase
 import app.echoirx.domain.usecase.SearchUseCase
@@ -13,8 +14,11 @@ import app.echoirx.domain.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +32,18 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(SearchState())
     val state: StateFlow<SearchState> = _state.asStateFlow()
+
+    val searchHistory: StateFlow<List<SearchHistory>> = searchUseCase.getSearchHistory()
+        .combine(state) {
+            searchHistory, state ->
+                searchHistory.filter { it.type == state.searchType }
+                    .take(MAX_SEARCH_HISTORY)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = emptyList()
+        )
 
     fun onQueryChange(query: String) {
         _state.update {
@@ -178,5 +194,14 @@ class SearchViewModel @Inject constructor(
                 showServerRecommendation = false
             )
         }
+    }
+
+    fun deleteSearchHistoryItem(item: SearchHistory) =
+        viewModelScope.launch {
+            searchUseCase.deleteSearchHistoryItem(item)
+        }
+
+    companion object {
+        const val MAX_SEARCH_HISTORY = 5
     }
 }

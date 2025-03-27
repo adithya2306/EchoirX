@@ -2,6 +2,7 @@ package app.echoirx.di
 
 import android.content.Context
 import app.echoirx.data.local.dao.DownloadDao
+import app.echoirx.data.local.dao.SearchHistoryDao
 import app.echoirx.data.media.FFmpegProcessor
 import app.echoirx.data.media.MetadataManager
 import app.echoirx.data.notification.DownloadNotificationManager
@@ -27,8 +28,12 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchRepository(
-        apiService: ApiService
-    ): SearchRepository = SearchRepositoryImpl(apiService)
+        apiService: ApiService,
+        searchHistoryDao: SearchHistoryDao
+    ): SearchRepository = SearchRepositoryImpl(
+        apiService,
+        searchHistoryDao
+    )
 
     @Provides
     @Singleton
